@@ -168,3 +168,7 @@ src/
 
 - **Mock auth**: any non-empty email + password logs you in  
 - **TypeScript**: all navigators, screens and params are fully typed
+
+
+# Demo Video
+- https://youtube.com/shorts/Dksk43sSQMY?feature=share 
