@@ -108,10 +108,10 @@ Auth state is persisted to `expo-secure-store`. On reload, `AuthContext` restore
 **Test on device/simulator:**
 ```bash
 # iOS Simulator
-xcrun simctl openurl booted "foodapp://restaurant/1"
+xcrun simctl openurl booted "food-delivery-app://restaurant/1"
 
 # Android Emulator
-adb shell am start -W -a android.intent.action.VIEW -d "foodapp://restaurant/1"
+adb shell am start -W -a android.intent.action.VIEW -d "food-delivery-app://restaurant/1"
 ```
 
 
