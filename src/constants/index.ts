@@ -1,0 +1,266 @@
+// src/constants/index.ts
+
+export const COLORS = {
+  primary: '#c50000',
+  primaryDark: '#e52424',
+  primaryLight: '#ff5a5a',
+  secondary: '#2D2D2D',
+  accent: '#FFD700',
+  background: '#FAFAF8',
+  surface: '#FFFFFF',
+  surfaceAlt: '#F5F4F0',
+  text: '#1A1A1A',
+  textMuted: '#888888',
+  textLight: '#BBBBBB',
+  border: '#EBEBEB',
+  success: '#4CAF50',
+  error: '#F44336',
+  warning: '#FF9800',
+  white: '#FFFFFF',
+  black: '#000000',
+  overlay: 'rgba(0,0,0,0.5)',
+  cardShadow: 'rgba(0,0,0,0.08)',
+};
+
+export const FONTS = {
+  regular: 'System',
+  medium: 'System',
+  bold: 'System',
+  sizes: {
+    xs: 11,
+    sm: 13,
+    md: 15,
+    lg: 17,
+    xl: 20,
+    xxl: 24,
+    xxxl: 32,
+  },
+};
+
+export const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+
+import { Restaurant } from '../types';
+
+export const MOCK_RESTAURANTS: Restaurant[] = [
+  {
+    id: '1',
+    name: 'Spice Garden',
+    cuisine: 'Indian • Biryani • Curry',
+    rating: 4.8,
+    deliveryTime: '25-35 min',
+    deliveryFee: '₹29',
+    minPrice: 149,
+    image: '🍛',
+    coverColor: '#00c410',
+    menuItems: [
+      {
+        id: 'm1',
+        name: 'Chicken Biryani',
+        description: 'Fragrant basmati rice with tender chicken, saffron and whole spices',
+        price: 299,
+        image: '🍛',
+        category: 'Mains',
+      },
+      {
+        id: 'm2',
+        name: 'Paneer Butter Masala',
+        description: 'Cottage cheese in rich tomato-cream gravy',
+        price: 249,
+        image: '🧀',
+        category: 'Mains',
+      },
+      {
+        id: 'm3',
+        name: 'Dal Makhani',
+        description: 'Slow-cooked black lentils in a buttery tomato sauce',
+        price: 199,
+        image: '🫘',
+        category: 'Mains',
+      },
+      {
+        id: 'm4',
+        name: 'Garlic Naan',
+        description: 'Tandoor-baked flatbread with garlic and butter',
+        price: 49,
+        image: '🫓',
+        category: 'Breads',
+      },
+    ],
+  },
+  {
+    id: '2',
+    name: 'Burger Republic',
+    cuisine: 'American • Burgers • Fast Food',
+    rating: 4.5,
+    deliveryTime: '20-30 min',
+    deliveryFee: '₹19',
+    minPrice: 99,
+    image: '🍔',
+    coverColor: '#E63946',
+    menuItems: [
+      {
+        id: 'm5',
+        name: 'Classic Smash Burger',
+        description: 'Double smashed patty, American cheese, pickles, special sauce',
+        price: 349,
+        image: '🍔',
+        category: 'Burgers',
+      },
+      {
+        id: 'm6',
+        name: 'Crispy Chicken Sandwich',
+        description: 'Fried chicken thigh, slaw, sriracha mayo on brioche',
+        price: 299,
+        image: '🥪',
+        category: 'Burgers',
+      },
+      {
+        id: 'm7',
+        name: 'Loaded Fries',
+        description: 'Crispy fries topped with cheese sauce and jalapenos',
+        price: 149,
+        image: '🍟',
+        category: 'Sides',
+      },
+      {
+        id: 'm8',
+        name: 'Oreo Shake',
+        description: 'Thick shake with Oreo cookies and whipped cream',
+        price: 179,
+        image: '🥤',
+        category: 'Drinks',
+      },
+    ],
+  },
+  {
+    id: '3',
+    name: 'Pizza Paradiso',
+    cuisine: 'Italian • Pizza • Pasta',
+    rating: 4.7,
+    deliveryTime: '30-40 min',
+    deliveryFee: '₹39',
+    minPrice: 199,
+    image: '🍕',
+    coverColor: '#2D6A4F',
+    menuItems: [
+      {
+        id: 'm9',
+        name: 'Margherita',
+        description: 'San Marzano tomatoes, fresh mozzarella, basil on thin crust',
+        price: 399,
+        image: '🍕',
+        category: 'Pizzas',
+      },
+      {
+        id: 'm10',
+        name: 'Pepperoni Feast',
+        description: 'Double pepperoni, mozzarella, oregano, tomato base',
+        price: 499,
+        image: '🍕',
+        category: 'Pizzas',
+      },
+      {
+        id: 'm11',
+        name: 'Pasta Arrabbiata',
+        description: 'Penne in spicy tomato sauce with garlic and parsley',
+        price: 299,
+        image: '🍝',
+        category: 'Pasta',
+      },
+    ],
+  },
+  {
+    id: '4',
+    name: 'Sushi Sensei',
+    cuisine: 'Japanese • Sushi • Ramen',
+    rating: 4.9,
+    deliveryTime: '35-45 min',
+    deliveryFee: '₹49',
+    minPrice: 299,
+    image: '🍱',
+    coverColor: '#264653',
+    menuItems: [
+      {
+        id: 'm12',
+        name: 'Dragon Roll',
+        description: '8-piece roll with shrimp tempura, cucumber, avocado top',
+        price: 649,
+        image: '🍣',
+        category: 'Rolls',
+      },
+      {
+        id: 'm13',
+        name: 'Tonkotsu Ramen',
+        description: 'Creamy pork bone broth, chashu, soft egg, nori',
+        price: 449,
+        image: '🍜',
+        category: 'Ramen',
+      },
+      {
+        id: 'm14',
+        name: 'Edamame',
+        description: 'Steamed salted edamame pods',
+        price: 149,
+        image: '🫛',
+        category: 'Starters',
+      },
+    ],
+  },
+  {
+    id: '5',
+    name: 'Taco Fiesta',
+    cuisine: 'Mexican • Tacos • Burritos',
+    rating: 4.4,
+    deliveryTime: '20-30 min',
+    deliveryFee: '₹29',
+    minPrice: 149,
+    image: '🌮',
+    coverColor: '#F4A261',
+    menuItems: [
+      {
+        id: 'm15',
+        name: 'Carne Asada Tacos',
+        description: 'Grilled steak, onion, cilantro, salsa verde, corn tortilla',
+        price: 249,
+        image: '🌮',
+        category: 'Tacos',
+      },
+      {
+        id: 'm16',
+        name: 'Chicken Burrito',
+        description: 'Loaded burrito with rice, beans, cheese, sour cream',
+        price: 349,
+        image: '🌯',
+        category: 'Burritos',
+      },
+      {
+        id: 'm17',
+        name: 'Guacamole & Chips',
+        description: 'Fresh avocado, lime, jalapeño, tomato with tortilla chips',
+        price: 199,
+        image: '🥑',
+        category: 'Starters',
+      },
+    ],
+  },
+];
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatar: string;
+ 
+}
+export const MOCK_USER = {
+  id: 'user_1',
+  name: 'Santosh Vishwakarma',
+  email: 'santosh.vishwakarma@email.com',
+  avatar: 'SV',
+};

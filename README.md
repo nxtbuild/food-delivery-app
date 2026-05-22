@@ -1,56 +1,170 @@
-# Welcome to your Expo app 👋
+# FoodApp 
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Quick Start
 
 ```bash
-npm run reset-project
+# Install dependencies
+npm install
+
+# Start Expo dev server
+npx expo start
+
+# Run on iOS
+npx expo run:ios
+
+# Run on Android
+npx expo run:android
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+## 🗺️ Navigation Structure
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```
+App.tsx
+└── RootNavigator (NavigationContainer + deep linking)
+    │
+    ├── [Unauthenticated] AuthNavigator (NativeStackNavigator)
+    │   ├── Onboarding          ← Full-screen dark landing
+    │   ├── Login               ← Email/password form, shake animation
+    │   └── Register            ← Sign up form
+    │
+    └── [Authenticated] DrawerNavigator (DrawerNavigator)
+        │   
+        ├── MainTabs (BottomTabNavigator)          ← "Home" in drawer
+        │   │   (4 tabs, vector icons, cart badge, hide-on-detail)
+        │   ├── HomeTab ─── HomeStackNavigator (NativeStackNavigator)
+        │   │               ├── HomeScreen          ← Restaurant list + categories
+        │   │               ├── RestaurantDetail    ← Params: id, name, color
+        │   │               └── Cart                ← Order summary + checkout
+        │   │
+        │   ├── Search          ← Live restaurant/dish filter
+        │   ├── Orders          ← Active order tracker + history
+        │   └── Profile         ← User info + drawer trigger button
+        │
+        ├── MyOrders            ← Drawer-only screen
+        ├── Settings            ← Toggle settings
+        └── Help                ← FAQ + contact support
+```
 
-## Learn more
+---
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🧭 Navigation Patterns
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 1. Stack Navigator
+- `AuthNavigator`: Onboarding → Login → Register
+- `HomeStackNavigator`: HomeScreen → RestaurantDetail → Cart
+- Custom header title, back label, header background color (via `screenOptions`)
+- `animation: 'slide_from_right'` for forward, `'fade_from_bottom'` for modals
 
-## Join the community
+### 2. Bottom Tab Navigator
+- 4 tabs with `@expo/vector-icons` (Ionicons)
+- Active icon uses filled variant; inactive uses outline
+- Icon wrapper highlights with `COLORS.primary + '15'` tint when focused
+- **Cart badge** on Orders tab via `tabBarBadge` prop (reads from `CartContext`)
+- **Hide tab bar** on RestaurantDetail and Cart: `getFocusedRouteName()` reads nested route state and conditionally sets `tabBarStyle: { display: 'none' }`
 
-Join our community of developers creating universal apps.
+### 3. Drawer Navigator
+- `drawerType: 'slide'` for a push-style animation
+- **Custom drawer content**: `CustomDrawerContent` renders user avatar, name, email, gold member badge at the top, then `<DrawerItemList>`, then logout button
+- Swipe-to-open gesture enabled
+- Profile screen contains a button that calls `navigation.openDrawer()`
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 4. Conditional Auth Flow
+```
+isLoading  → <ActivityIndicator />          (prevents flash)
+isAuth     → <DrawerNavigator />            (full app)
+!isAuth    → <AuthNavigator />              (login flow)
+```
+Auth state is persisted to `expo-secure-store`. On reload, `AuthContext` restores the session before rendering, so authenticated users go directly to the main app.
+
+
+
+## 🔀 Programmatic Navigation
+
+| Method | Used where |
+|--------|-----------|
+| `navigate('Screen', params)` | HomeScreen → RestaurantDetail |
+| `goBack()` | All back buttons |
+| `replace('Login')` | Onboarding → Login (no back) |
+| `reset({ index: 0, routes: [{ name: 'HomeScreen' }] })` | After placing order |
+| `openDrawer()` | Profile screen menu button |
+
+---
+
+## 🔗 Deep Linking
+
+**Scheme:** `food-delivery-app://`
+
+| URL | Destination |
+|-----|-------------|
+| `food-delivery-app://home` | HomeScreen |
+| `food-delivery-app://restaurant/1` | RestaurantDetail (id=1) |
+| `food-delivery-app://cart` | Cart screen |
+| `food-delivery-app://search` | Search tab |
+| `food-delivery-app://orders` | Orders tab |
+| `food-delivery-app://settings` | Settings drawer screen |
+
+**Test on device/simulator:**
+```bash
+# iOS Simulator
+xcrun simctl openurl booted "foodapp://restaurant/1"
+
+# Android Emulator
+adb shell am start -W -a android.intent.action.VIEW -d "foodapp://restaurant/1"
+```
+
+
+
+---
+
+## 🎨 Screen Transition Animations
+
+| Transition | Animation |
+|-----------|-----------|
+| Auth screens | `fade_from_bottom` |
+| Stack forward | `slide_from_right` |
+| Auth → Main | Automatic (navigator swap) |
+| Drawer open | `slide` (pushes content) |
+| Tab switch | Default fade |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   └── _layout.tsx          # Expo Router entry (providers)
+├── components/
+│   └── CustomDrawerContent.tsx
+├── constants/
+│   └── index.ts             # Colors, spacing, mock data
+├── context/
+│   ├── AuthContext.tsx       # Auth state + SecureStore persistence
+│   └── CartContext.tsx       # Cart state management
+├── navigation/
+│   ├── RootNavigator.tsx     # NavigationContainer + linking
+│   ├── AuthNavigator.tsx     # Auth stack
+│   ├── DrawerNavigator.tsx   # Drawer with custom content
+│   ├── BottomTabNavigator.tsx # 4-tab nav with badge logic
+│   └── HomeStackNavigator.tsx # Home → Detail → Cart stack
+├── screens/
+│   ├── auth/                 # Onboarding, Login, Register
+│   ├── home/                 # HomeScreen
+│   ├── restaurant/           # RestaurantDetailScreen
+│   ├── cart/                 # CartScreen
+│   ├── search/               # SearchScreen
+│   ├── orders/               # OrdersScreen
+│   ├── profile/              # ProfileScreen
+│   └── drawer/               # MyOrders, Settings, Help
+└── types/
+    └── index.ts              # All TypeScript types + param lists
+```
+
+
+
+## 📝 Notes
+
+- **Mock auth**: any non-empty email + password logs you in  
+- **TypeScript**: all navigators, screens and params are fully typed
